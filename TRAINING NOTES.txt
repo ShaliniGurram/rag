@@ -1,0 +1,315 @@
+***TRAINING NOTES***
+By looking at evaluation metrics, how can we understand if the model is overfitting or underfitting?
+
+# Set up Logistic Regression and GridSearch
+param_grid = {'C': [0.001, 0.1, 1, 10, 100]}
+model = LogisticRegression(max_iter=1000)
+grid = GridSearchCV(model, param_grid, cv=5)
+grid.fit(X_train, y_train)
+
+# Best parameter
+print("Best C:", grid.best_params_['C'])
+
+# Train and test scores
+train_score = grid.score(X_train, y_train)
+test_score = grid.score(X_test, y_test)
+print(f"Train Accuracy: {train_score:.4f}")
+print(f"Test Accuracy: {test_score:.4f}")
+
+
+
+9ywEtHDcfieyB6svlKfLw2VoSFvtI45t - MYPI (Mistral API Key)
+
+
+
+Storage =>
+blob - unstructured
+files - flat file
+tables - structured
+query - messages(streaming data)
+
+Azure Storage
+Generation 1 - no optimization, no hierarchical namespace
+Generation 2 (Recommended) - optimization, resource management, hierarchical namespace
+
+IAAS - Virtual servers
+Storages - DATALAKEGEN1(Blob Storage), DATALAKEGEN2
+Database - Azure SQL Server (OLTP DATABASE):tables<<<SQL queries
+      it is PAAS, single server API, limited DB, only structured data
+DDL, DML, DCL, DTL
+
+Azure also provides - Datawarehouse(OLAP)
+
+NOSQL DB(BIGDATA DATABASE) SERVICE:AZURECOSMOSDB
+NOSQL: NOT ONLY SQL
+
+HBASE, MONGODB, CASSANDRA: OPEN SOURCE
+AZURE CLOUD; COSMOS DB: any large vol structured data, semi structured data
+
+
+
+SQL	            |  NOSQL(cosmosdb) or HBASE, CASSANDRA, MONGODB
+--------------------|---------------------------------------------
+ 		    |
+Row oriented        |  Column oriented or document oriented database
+Schema              |  Schema less
+Limited             |  Bigdata
+Table		    |  Table
+SQL 		    |  SQL query>>>NOSQL tables
+Not distributed     |  Globally distributed
+ACID		    |  No ACID
+Single Server API   |  Cosmosdb + DFS(Datalake)
+OLTP		    |  OLAP
+Backend		    |  Backend
+
+CosmosDB - DB for Azure
+Datawarehouse provided ny Azure -> Azure Synapse (SQL DW) (A DW is always a OLAP) - for large structured and semi-structured data
+
+Data is divided into blocks and stored as nodes
+Data is stored as tables but by default it is stored into Datalakes
+
+Data from On-premise, Cloud etc is sent into Synapse
+Synapse - not used as backend for application development
+Azure Synapse DW -> chosen only for Analytics purpose -> after analysis, the output is sent to the Power BI for preparing the reports
+Store for this is - Azure Data Lake Storage
+
+For processing, it is stored in Disk not in memory - SQL Pool
+For im memory, use spark pool
+For both, the data is stored in Datalake
+Datawarehouse uses both pools se Synapse, it by default stores in datalakes in tabular format but
+If we store directly to the data lake, it is stored in te form of files, again we need to convert into tables
+
+|--------------------------------------|
+| SQL pool | Synapse DW  |  Spark pool |
+|--------------------------------------|
+|             DATALAKE		       |
+|--------------------------------------|
+
+GCP( Bigdata (DW))
+
+External table - stored in datalake
+Internal table
+
+In spark pool, it processes the data in memory -> we 1st need to load into mempry and then nodes.
+Input for spark analysis is either RDD(PySpark, SparkScala for analysis) or Dataframe (SparkSQL for analysis)
+
+SQL Pool   ->|		 |
+ 	     | SynapseDW | -> DataLake
+Spark Pool ->|           |
+
+
+From SQL Server to Synapse DW, importing and exporting is done with the help of Azure Data Factory(ADF)
+From Azure SQL to Azure DataLakes also imports exports are done by using ADF(provides Extraction Transformation Loading(ETL) services)
+
+In Azure - ADF (100% code free)
+In GCP - DataFlow
+
+Create ADF Piepline from blob storage to blob storage
+
+Source: X-Container : rama.csv
+Target: Y-Container
+
+
+
+Steps to create ADF pipeline - SQL Server to Datalake
+1. create source - azure sql server: emp table
+   create target - datalake: container abc
+2. create linked services for the source: azure SQL server
+   create linked services for he target: Datalake
+3. create datasets for source to target
+4. create pipeline using copydata activity then configure the source and sink
+5. validate the pipeline and debug then publish and trigger
+6. monitor the pipeline status and then check target
+
+---
+24-10-2025
+
+All web applications follow 3 tier architecture
+1. UI (Frontend) -> html, javascript, reactjs, angularjs
+2. Application Server - JSP, Servlets, ASP, Struts (these will be communicating with the database) - ex: WebLogic server, Conquest DICOM server
+3. Database (Backend) - SQL(for small), NOSQL(for big - high speed response)
+
+for frontend dynamic website designing, we use html, js and reactjs.
+Angularjs always follows the framework architecture(3-tier) with the application server.
+In reactjs, UI components can be reusable.
+
+html + css - static
+javascript - dynamic
+angularjs - framework based, not virtual DOM
+reactjs - UI component, reusability, maintains virtual DOM ( so is faster than angularjs), javascripts library, code minimized
+
+React renders html:
+createRoot() - to render html
+
+import {createRoot} from 'react-dom/client'
+createRoot(document.geElementById('root')).render(<h1>Hello React!</h1>)
+
+- render = displays your component
+- createRoot = prepares the environment to support React 18's new capabilities
+
+React JSX(javascript xml)
+- trying to use xml in the react
+allows us to write html in react
+jsx makes it easier to write html
+
+when u want to create react UI applications (dynamic), we have to use the 3 files -
+app.jx - defines the UI component
+index.jsx - renders the component into the page
+index.html - provides the root element for react
+
+With JSX you can write expressions inside curly braces{}
+The expression can be a react variable or property
+
+ES6 - ECMA Scripts 6
+Classes
+Arrow functions
+Variables
+Array methods
+Destructuring
+Modules
+Ternary operator
+Spread operator
+
+
+
+GCP
+
+IAAS - networking, security, containers, compute, virtual machine services
+PAAS -
+
+for GCP - data storage is cloud storage(or object storage) - (like datalake for azure)
+for GCP - database service is cloud SQL(OLTP) (like azure SQL for azure)
+For datawarehouse service -> BigQuery (any volume) - GCP - OLAP
+Big Table, Cloud DataStore - NoSQL DB Service in GCP
+Dataproc - in gcp - for launching hadoop spark solutions - hadoop and spark clusters
+Dataflow (source to target) in GCP (like Data Factory in Azure)
+Live streaming engine data service - Pub/Sub service in GCP
+
+to prepare own platform in GCP - go to compute engine and launch servers
+
+services usd for a project -
+vpc(Virtual Private Cloud) can be created or default can also be used.
+With Amazon VPC, you can launch AWS resources in a virtual network that you define
+
+Compute IAAS : VM Instances
+
+Cloud admin: IAM, VPC, Networking, Load balancing (you have no right to modify these(only seniors who created has access to this)
+
+Application development services - (s/w engineer, s/w dev)
+they are: - appengine
+ 	  - containers
+ 	  - cloudrun
+ 	  - kuberetes
+
+Data Engineer, Data Science, or AI Consultant role:  GCP : PAAS (all these below are platform services only)
+- CloudStorage (DFS) or HDFS
+- CloudSQL
+- CloudSpanner (if you need more than SQL)
+- BigTable
+- BigQuery -> is inbuilt on DFS
+- DataProc
+- DataFlow
+- Composser
+- DataBricks (if you need spark platform)
+- VertexAI (playing AI engineer role) (AI and ML)
+- Looker (Visualization, Reports)
+
+AppEngine service is to develop applications and deploy the applications using PAAS
+CloudRun: Deploy the containerized application (1st you need to create a container and deploy it)
+Kubernets clusters- set of containers (shopping platforms like myntra, swiggy, linkedin, etc., use kubernets) - bcz using multiple containers separately makes hosting them hard
+
+
+Storage classes in GCP
+Standard - default (best practice)
+Nearline
+Coldline
+Archive - long time
+
+To move files from one bucket to another ->  gcloud storage mv gs://productsss/new.txt gs://salesssnew/new.txt
+ - gcloud storage mv new.txt gs://productsss
+ - gcloud storage rm gs://salesssnew/new.txt
+
+CloudSQL: RDBMS - OLTP - SQLDB Instances: MySQL, MSSQL, DB2, SYBASE, POSTGRE, etc.,
+CloudSQL: Full managed DB Service : PAAS
+Backup, Scalability, Snapshots
+CloudSQL: Storing data: Tables <<< SQL
+
+
+cluster id - myinstancet-c1
+
+cloudSQL: SQL: OLTP
+BigTable: NOSQL: OLAP
+Cloudspanner" 100% ACID
+Cloud Spanner is a fully managed, globally distributed, and strongly consistent relational database service developed by Google Cloud.
+
+Cloud storage in GCP - BigQuery (Both input and output are stored in BigQuery only)
+- this is only for struc or semi-struc data not for Unstruc data (not 100% ACID and not OLTP)
+- Many modern DW are OLAP
+
+Even in the GCP - we have 2 types of tables (internal and external)
+Purpose of creating external table: instead of creating tables internally, we are ctreating tables from external storage.
+Major diff betwen both: Only meta data will remain if we drop external table, but if we drop internal table, everything will be erased.
+
+BigQuery DW Analysis:
+Create Dataset
+Create Table(chose internal or external) and load it ot insert it
+verify the data (SELECT * FROM table_name LIMIT 5)
+Analysis (analyse the output after running the query) - this step getting the required data is challenging for a data engineer
+Output table obtained - transfer this to the client database
+Client DB >> BI tool(Looker in GCP or we can use Power BI too) => reports
+
+BigData Analytics: GCP
+GCP: BigQuery DW: SQL
+GCP: Hadoop, Spark >>>BigData : DataProc
+Hadoop Cluster >>> BigData
+Spark Cluster >>> BigData
+
+DataProc: Hadoop + Spark Cluster: Single or N node cluster
+Databricks service can be used, if we want only spark
+
+Data ingestion services in GCP:
+PUB-SUB
+Live application server(flipkart, amazon, linkedin, ola..)>>> pubsub is working as a data factory >>>GCS or BigQuery
+Pub: Publisher: Producer
+Sub: Subscribe: Consumer
+
+NOTE: Kafka(On-premise) or Azure Cloud: Eventhub
+
+2. Dataflow (For historical data)
+ 	SQL to BigQuery: Dataflow
+ 	BigQuery to SQL: Dataflow
+ 	GCS to SQL: Dataflow
+ 	GCS to BigTable
+
+Live Server >>> PUB-SUB >>> DATAFLOW >>> GCS
+
+Topic : Set of messages
+pub to topic to sub
+
+Data sources are 2 types -> static and dynamic
+Static is historical - ETL Tools
+ynamic - PubSub
+
+Source to Target and vicecersa -> importing and exporting can be done
+Pipeline - connection between the source and the target
+pipelines in GCP -> DataFlow
+
+DATAFLOW: BATCH PROCESSING PIPELINES
+GCS mybuck: xyz.csv to BigQuery: empty table
+
+CosmosDB 		- bigtable
+AzureSQL     	- cloudSQL
+Cosmos nosql 	- BigTable
+Synapse 		- BigQuery
+HdInsights   	- Dataproc
+ADF 		        - DataFlow
+EventHub		- PubSub
+Datalake(gen1,gen2)	- GCS
+PowerBI 		- Looker
+Workflow: airflow 	- Composser - airflow
+AAD(iam) 		- IAM
+DEV tools
+Codebuild
+Codepipelin 		- appengine, container, cloudrun, kubernets
+Databricks 		- Databricks
+Azurefunctions 	- Cloudfunctions
